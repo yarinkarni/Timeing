@@ -1,22 +1,13 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, ScrollView, Button } from 'react-native'
+import { View, StyleSheet, ScrollView } from 'react-native'
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
-import { create } from 'mobx-persist';
-import AsyncStorage from '@react-native-community/async-storage'
-import FollowersStore from '../Stores/FollowersStore'
 import { SearchBar } from 'react-native-elements';
-// import { FAB } from 'react-native-paper';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+//import { FAB } from 'react-native-paper';
+import { YellowBox } from 'react-native';
+YellowBox.ignoreWarnings(['Remote debugger']);
 
-let url = 'http://185.60.170.14/plesk-site-preview/ruppinmobile.ac.il/site04/';
-// הבאת מיידע מהמכשיר
-const hydrate = create({
-  storage: AsyncStorage,
-});
-const GetHydrate = () => {
-  hydrate('userData', FollowersStore).then(() =>
-    console.log('Get data from store'),
-  );
-}
+let url = 'http://site04.up2app.co.il/';
 export default class ScholarshipList extends Component {
   constructor(props) {
     super(props);
@@ -29,7 +20,6 @@ export default class ScholarshipList extends Component {
     this.setState({ search });
   };
   componentDidMount = async () => {
-    await GetHydrate()
     let returnedObj = null;
     await fetch(url + "getAllScholarships",
       {
@@ -92,6 +82,7 @@ export default class ScholarshipList extends Component {
         <ScrollView>
           {cards}
         </ScrollView>
+        <FontAwesome name="user-plus" size={50} style={styles.fab} />
         {/* <FAB
           style={styles.fab}
           small

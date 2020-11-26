@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#DCDCDC',
-    height: "100%",
+    height: "93%",
     width: "100%"
   },
   loginText: {

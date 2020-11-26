@@ -1,20 +1,13 @@
 import React, { Component } from 'react';
-import { View, TextInput, ScrollView, YellowBox, Text, StyleSheet } from 'react-native';
+import { View, ScrollView, StyleSheet } from 'react-native';
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
-//import { FAB, DeleteForeverTwoTone } from 'react-native-paper';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-
-
-
-YellowBox.ignoreWarnings([
-  'Require cycle:'
-])
-//import Fab from '@material-ui/core/Fab';
-// import AddIcon from '@material-ui/icons/Add';
+//import { FAB } from 'react-native-paper';
+// import Fab from '@material-ui/core/Fab';
 // import EditTwoToneIcon from '@material-ui/icons/EditTwoTone';
-// import DeleteForeverTwoToneIcon from '@material-ui/icons/DeleteForeverTwoTone';
-// import IconButton from '@material-ui/core/IconButton';
-let url = 'http://185.60.170.14/plesk-site-preview/ruppinmobile.ac.il/site04/';
+//import DeleteForeverTwoTone from '@material-ui/icons/DeleteForeverTwoTone';
+let url = 'http://site04.up2app.co.il/';
 
 export default class ManagementPage extends Component {
   constructor(props) {
@@ -24,7 +17,7 @@ export default class ManagementPage extends Component {
     }
   }
   componentDidMount() {
-    //this.getAllScholarships();
+    this.getAllScholarships();
   }
   getAllScholarships = async () => {
     let returnedObj = null;
@@ -68,7 +61,7 @@ export default class ManagementPage extends Component {
           <CardAction
             separator={true}
             inColumn={false}>
-            <DeleteForeverTwoTone />
+            {/* <DeleteForeverTwoTone /> */}
 
             <CardButton
               onPress={() => this.props.navigation.navigate('ScholarshipDetails', { ScholarshipDetails: list[index] })}
@@ -85,6 +78,7 @@ export default class ManagementPage extends Component {
         <ScrollView>
           {cards}
         </ScrollView>
+        <FontAwesome name="user-plus" size={50} style={styles.fab} />
         {/* <FAB
           style={styles.fab}
           small

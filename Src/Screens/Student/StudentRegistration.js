@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
-import { ScrollView, Image, TextInput, View, Text, StyleSheet, TouchableHighlight, ImageBackground , YellowBox} from 'react-native';
-import DatePicker from 'react-native-datepicker'
-YellowBox.ignoreWarnings(['Remote debugger']);
-
-let url = 'http://185.60.170.14/plesk-site-preview/ruppinmobile.ac.il/site04/';
-
+import { ScrollView, Image, TextInput, View, Text, StyleSheet, TouchableHighlight, ImageBackground } from 'react-native';
+import DatePicker from 'react-native-datepicker';
+import PushNotification from "react-native-push-notification";
+let url = 'http://site04.up2app.co.il/';
 export default class StudentRegistration extends Component {
   constructor(props) {
     super(props);
@@ -19,8 +17,37 @@ export default class StudentRegistration extends Component {
       Address: '',
       City: '',
       Token: '',
-      date: "2016-05-15"
+      date: "2016-05-15",
+      Token: ''
     };
+  }
+  componentDidMount = async () => {
+    //FirebaseApp.initializeApp();
+    PushNotification.configure({
+      onRegister: (Token) => {
+        this.setState({ Token: Token });
+        console.log("TOKEN:", Token);
+        console.log(this.state.Token.token + '      this.state.Token')
+      },
+      onNotification: function (notification) {
+        console.log("NOTIFICATION:", notification);
+        //notification.finish(PushNotificationIOS.FetchResult.NoData);
+      },
+      // onAction: function (notification) {
+      //   console.log("ACTION:", notification.action);
+      //   console.log("NOTIFICATION:", notification);
+      // },
+      // onRegistrationError: function (err) {
+      //   console.error(err.message, err);
+      // },
+      permissions: {
+        alert: true,
+        badge: true,
+        sound: true,
+      },
+      popInitialNotification: true,
+      requestPermissions: true,
+    });
   }
   txtchgFirstName = (FirstName) => this.setState({ FirstName });
   txtchgLastName = (LastName) => this.setState({ LastName });
@@ -31,12 +58,12 @@ export default class StudentRegistration extends Component {
   txtchgSex = (Sex) => this.setState({ Sex });
   txtchgAddress = (Address) => this.setState({ Address });
   txtchgCity = (City) => this.setState({ City });
-  txtchgToken = (Token) => this.setState({ Token });
 
   btnAddStudent = async () => {
     let s = await this.AddStudent(this.state.FirstName, this.state.LastName, this.state.Email, this.state.Password,
-      this.state.Telephone, this.state.BirthDate, this.state.Sex, this.state.Address, this.state.City, this.state.Token);
-    if (s === null)
+      this.state.Telephone, this.state.BirthDate, this.state.Sex, this.state.Address, this.state.City, this.state.Token.token);
+    console.log(this.state.FirstName + 'yaaaaaaa' +this.state.Token.token+'baaaaaaaaaa' )
+      if (s === null)
       alert("Register Faild");
     else
       this.props.navigation.navigate('Login', { user: s });
@@ -82,6 +109,7 @@ export default class StudentRegistration extends Component {
     return returnedObj;
   }
   render() {
+    
     return (
       <ImageBackground style={styles.container} >
         <View >

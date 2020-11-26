@@ -5,36 +5,39 @@ import PushNotification from "react-native-push-notification";
 class FollowersStore {
   //משתנה שנשמר במכשיר
   @persist @observable userData = null
+
   //משתנה לוקאלי של האפליקציה
-  @observable user = 'ron'
+  @observable user = 'ron';
   @observable ScholarshipDetails = null;
-  @observable news = []
-  constructor() {
-    //FirebaseApp.initializeApp();
-    PushNotification.configure({
-      onRegister: function (token) {
-        console.log("TOKEN:", token);
-      },
-      onNotification: function (notification) {
-        console.log("NOTIFICATION:", notification);
-        //notification.finish(PushNotificationIOS.FetchResult.NoData);
-      },
-      // onAction: function (notification) {
-      //   console.log("ACTION:", notification.action);
-      //   console.log("NOTIFICATION:", notification);
-      // },
-      // onRegistrationError: function (err) {
-      //   console.error(err.message, err);
-      // },
-      permissions: {
-        alert: true,
-        badge: true,
-        sound: true,
-      },
-      popInitialNotification: true,
-      requestPermissions: true,
-    });
-  }
+  @observable news = [];
+  @observable Token = 'yarin';
+  // constructor() {
+  //   //FirebaseApp.initializeApp();
+  //   PushNotification.configure({
+  //     onRegister: function (token) {
+  //       this.Token = token;
+  //       console.log("TOKEN:", token);
+  //     },
+  //     onNotification: function (notification) {
+  //       console.log("NOTIFICATION:", notification);
+  //       //notification.finish(PushNotificationIOS.FetchResult.NoData);
+  //     },
+  //     // onAction: function (notification) {
+  //     //   console.log("ACTION:", notification.action);
+  //     //   console.log("NOTIFICATION:", notification);
+  //     // },
+  //     // onRegistrationError: function (err) {
+  //     //   console.error(err.message, err);
+  //     // },
+  //     permissions: {
+  //       alert: true,
+  //       badge: true,
+  //       sound: true,
+  //     },
+  //     popInitialNotification: true,
+  //     requestPermissions: true,
+  //   });
+  // }
 
   testPush = () => {
     PushNotification.localNotification({
@@ -60,6 +63,9 @@ class FollowersStore {
   get getScholarshipDetails() {
     return this.ScholarshipDetails
   }
+  get getToken() {
+    return this.Token
+  }
   //לשנות את המשתנה
   @action
   setUser(user) {
@@ -68,6 +74,10 @@ class FollowersStore {
   @action
   setScholarshipDetails(ScholarshipDetails) {
     this.ScholarshipDetails = ScholarshipDetails
+  }
+  @action
+  setToken(token) {
+    this.Token = token
   }
 }
 

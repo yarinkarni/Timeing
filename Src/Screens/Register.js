@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { YellowBox, ScrollView, Image, View, Text, StyleSheet, TouchableHighlight, ImageBackground } from 'react-native'
 import InputOutline from 'react-native-input-outline';
-YellowBox.ignoreWarnings(['Remote debugger']);
-let url = 'http://185.60.170.14/plesk-site-preview/ruppinmobile.ac.il/site04/';
+let url = 'http://site04.up2app.co.il/';
 
 export default class Register extends Component {
   constructor(props) {

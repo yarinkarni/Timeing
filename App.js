@@ -1,6 +1,6 @@
 import React from 'react';
-import { createAppContainer } from 'react-navigation'
-import AppNav from './Src/Routes/AppNav'
+//import { createAppContainer } from 'react-navigation'
+//import AppNav from './Src/Routes/AppNav'
 import { Provider } from 'mobx-react'
 import FollowersStore from './Src/Stores/FollowersStore'
 
@@ -32,7 +32,7 @@ class App extends React.Component {
 }
 
 export default App;
-const AppContainer = createAppContainer(AppNav);
+//const AppContainer = createAppContainer(AppNav);
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();

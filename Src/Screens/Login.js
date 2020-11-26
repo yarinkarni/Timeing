@@ -1,23 +1,8 @@
 import React, { Component } from 'react'
-import { Text, View, TouchableHighlight, ImageBackground, StyleSheet, TextInput, Image, YellowBox } from 'react-native';
+import { Alert, Text, View, TouchableHighlight, ImageBackground, StyleSheet, TextInput, Image } from 'react-native';
 
-import { create } from 'mobx-persist';
+let url = 'http://site04.up2app.co.il/';
 
-import AsyncStorage from '@react-native-community/async-storage'
-import FollowersStore from '../Stores/FollowersStore'
-YellowBox.ignoreWarnings(['Remote debugger']);
-
-let url = 'http://185.60.170.14/plesk-site-preview/ruppinmobile.ac.il/site04/';
-// הבאת מיידע מהמכשיר
-const hydrate = create({
-  storage: AsyncStorage,
-});
-const GetHydrate = () => {
-  hydrate('userData', FollowersStore).then(() =>
-    console.log('Get data from store'),
-    //testSchedule()
-  );
-}
 export default class Login extends Component {
   constructor(props) {
     super(props);
@@ -26,10 +11,7 @@ export default class Login extends Component {
       password: ''
     }
   }
-  componentDidMount = async () => {
-    await GetHydrate()
 
-  }
 
   txtchgEmail = (email) => {
     this.setState({ email });
@@ -38,17 +20,19 @@ export default class Login extends Component {
     this.setState({ password });
   }
   btnSignUp = async () => {
-    this.props.navigation.navigate('Register', { user: s });
+    this.props.navigation.navigate('Register');
   }
   btnLogin = async () => {
-    let s = await this.checkStudentDetils(this.state.email,this.state.password);
-    console.log(s+"");
-    if (s != null)
-      this.props.navigation.navigate('Register', { user: s });
+    let s = await this.checkStudentDetils(this.state.email, this.state.password);
+    if (s !== null)
+      this.props.navigation.navigate('ManagementPage', { user: s });
+    else
+      Alert.alert('האימייל או הסיסמא שגויים');
   }
-  checkStudentDetils = async (email,password) => {
+  checkStudentDetils = async (email, password) => {
+    if (email == '' || password == '') return null;
     let returnedObj = null;
-    await fetch(url + `api/Users?email=${this.state.email}&password=${this.state.password}`,
+    await fetch(url + `api/Users?email=${email}&password=${password}`,
       {
         method: 'GET',
         headers: new Headers({
@@ -62,7 +46,6 @@ export default class Login extends Component {
           returnedObj = data;
         }
         else {
-          alert("wrong ID!");
           returnedObj = null;
         }
       })
@@ -92,8 +75,8 @@ export default class Login extends Component {
           <TouchableHighlight style={[styles.MainButton, styles.loginButton]} onPress={this.btnLogin}>
             <Text style={styles.loginText}>היכנס</Text>
           </TouchableHighlight>
-          <TouchableHighlight style={[styles.MainButton, styles.loginButton]} onPress={this.btnLogin}>
-            <Text style={styles.loginText}>היכנס</Text>
+          <TouchableHighlight style={[styles.MainButton, styles.loginButton]} onPress={this.btnSignUp}>
+            <Text style={styles.loginText}>הירשם</Text>
           </TouchableHighlight>
         </View>
       </ImageBackground >
@@ -166,7 +149,8 @@ const styles = StyleSheet.create({
     color: '#ffffff'
   },
   MainButton: {
-    height: 45,
+
+    height: 30,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

@@ -3,7 +3,6 @@ import { View, StyleSheet, ScrollView } from 'react-native'
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 import { SearchBar } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-//import { FAB } from 'react-native-paper';
 import { YellowBox } from 'react-native';
 YellowBox.ignoreWarnings(['Remote debugger']);
 
@@ -85,12 +84,6 @@ export default class ScholarshipList extends Component {
         <FontAwesome name="user-plus" size={50} style={styles.fab}
           onPress={() => this.props.navigation.navigate('Login')}
         />
-        {/* <FAB
-          style={styles.fab}
-          small
-          icon="plus"
-          onPress={() => this.props.navigation.navigate('Login')}
-        /> */}
       </View>
     )
   }

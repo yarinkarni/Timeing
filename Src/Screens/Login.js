@@ -108,8 +108,9 @@ export default class Login extends Component {
 
 
   render() {
+    console.log(this.state.picker+"this.state.picker")
     return (
-      <ImageBackground style={styles.container}>
+      <ImageBackground source={require('../images/yarin.png')} style={styles.container}>
         <View style={styles.inner}>
           <Text style={styles.SecondTopic}>כניסה</Text>
           <Image style={{ width: 100, height: 100 }} />
@@ -117,7 +118,7 @@ export default class Login extends Component {
             <DropDownPicker
               items={[
                 { label: 'סטודנט', value: 'סטודנט', icon: () => <Icon name="flag" size={18} color="#900" />, hidden: true },
-                { label: 'אחראי מלגה', value: 'אחראי מלגה', icon: () => <Icon name="flag" size={18} color="#900" /> },
+                { label: 'מנהל מלגה', value: 'מנהל מלגה', icon: () => <Icon name="flag" size={18} color="#900" /> },
               ]}
               defaultValue={this.state.picker}
               containerStyle={{ height: 40 }}

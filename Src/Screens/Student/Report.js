@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import Geolocation from '@react-native-community/geolocation';
 import { observer, inject } from 'mobx-react'
+let url = 'http://site04.up2app.co.il/';
 @inject("FollowersStore")
 @observer
 export default class Report extends Component {
@@ -56,8 +57,8 @@ export default class Report extends Component {
     Geolocation.getCurrentPosition((info) => {
       this.setState({ startlatitude: info.coords.latitude })
       this.setState({ startlongitude: info.coords.longitude })
-      console.log(this.state.startlatitude + ' this.state.startlatitude')
-      console.log(this.state.startlongitude + ' this.state.startlongitude')
+      // console.log(this.state.startlatitude + ' this.state.startlatitude')
+      // console.log(this.state.startlongitude + ' this.state.startlongitude')
     })
     this.setState({ startTime: `${hours}:${minutes}:${seconds}` });
   }
@@ -69,8 +70,8 @@ export default class Report extends Component {
     Geolocation.getCurrentPosition((info) => {
       this.setState({ endlatitude: info.coords.latitude })
       this.setState({ endlongitude: info.coords.longitude })
-      console.log(this.state.endlatitude + ' this.state.endlatitude')
-      console.log(this.state.endlongitude + ' this.state.endlongitude')
+      // console.log(this.state.endlatitude + ' this.state.endlatitude')
+      // console.log(this.state.endlongitude + ' this.state.endlongitude')
     })
     this.setState({ endTime: `${hours}:${minutes}:${seconds}` });
   }

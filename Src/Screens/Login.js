@@ -1,14 +1,28 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import { Alert, Text, View, TouchableHighlight, ImageBackground, StyleSheet, TextInput, Image } from 'react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
+import Icon from 'react-native-vector-icons/Feather';
 
 let url = 'http://site04.up2app.co.il/';
+import { observer, inject } from 'mobx-react'
+@inject("FollowersStore")
+@observer
+// const App = () => {
+//   const [selectedValue, setSelectedValue] = useState("סטודנט");
+//   return (
+//     <View style={styles.container}>
+
+//     </View>
+//   );
+// }
 
 export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      picker: 'סטודנט',
     }
   }
 
@@ -20,16 +34,53 @@ export default class Login extends Component {
     this.setState({ password });
   }
   btnSignUp = async () => {
+
     this.props.navigation.navigate('Register');
   }
   btnLogin = async () => {
-    let s = await this.checkStudentDetils(this.state.email, this.state.password);
-    if (s !== null)
-      this.props.navigation.navigate('ManagementPage', { user: s });
-    else
-      Alert.alert('האימייל או הסיסמא שגויים');
+    if (this.state.picker === 'מנהל מלגה') {
+      let s = await this.checkStudentDetilsForUser(this.state.email, this.state.password);
+      if (s !== null) {
+        this.props.navigation.navigate('ManagementPage');
+        this.props.FollowersStore.setUser(s)
+      }
+      else
+        Alert.alert('האימייל או הסיסמא שגויים');
+    }
+    else {
+      let s = await this.checkStudentDetilsForStudnet(this.state.email, this.state.password);
+      if (s !== null)
+        this.props.navigation.navigate('Report', { user: s });
+      else
+        Alert.alert('האימייל או הסיסמא שגויים');
+    }
   }
-  checkStudentDetils = async (email, password) => {
+  checkStudentDetilsForStudnet = async (email, password) => {
+    if (email == '' || password == '') return null;
+    let returnedObj = null;
+    await fetch(url + `api/Students?email=${email}&password=${password}`,
+      {
+        method: 'GET',
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }),
+      })
+      .then((resp) => resp.json())
+      .then(function (data) {
+        if (data != null) {
+          returnedObj = data;
+        }
+        else {
+          returnedObj = null;
+        }
+      })
+      .catch(function (err) {
+        alert(err);
+      });
+    return returnedObj;
+  }
+  checkStudentDetilsForUser = async (email, password) => {
     if (email == '' || password == '') return null;
     let returnedObj = null;
     await fetch(url + `api/Users?email=${email}&password=${password}`,
@@ -62,6 +113,24 @@ export default class Login extends Component {
         <View style={styles.inner}>
           <Text style={styles.SecondTopic}>כניסה</Text>
           <Image style={{ width: 100, height: 100 }} />
+          <View style={{padding:20}}>
+            <DropDownPicker
+              items={[
+                { label: 'סטודנט', value: 'סטודנט', icon: () => <Icon name="flag" size={18} color="#900" />, hidden: true },
+                { label: 'אחראי מלגה', value: 'אחראי מלגה', icon: () => <Icon name="flag" size={18} color="#900" /> },
+              ]}
+              defaultValue={this.state.picker}
+              containerStyle={{ height: 40 }}
+              style={{ backgroundColor: '#fafafa',width:250,height:100,position: 'relative' }}
+              itemStyle={{
+                justifyContent: 'flex-start'
+              }}
+              dropDownStyle={{ backgroundColor: '#fafafa' }}
+              onChangeItem={item => this.setState({
+                picker: item.value
+              })}
+            />
+          </View>
           <View style={styles.inputContainer}>
             <TextInput style={styles.inputs}
               placeholderTextColor="#000000"
@@ -72,12 +141,16 @@ export default class Login extends Component {
               placeholderTextColor="#000000"
               value={this.state.password} onChangeText={(text) => { this.txtchgPass(text) }} placeholder='סיסמא' />
           </View>
-          <TouchableHighlight style={[styles.MainButton, styles.loginButton]} onPress={this.btnLogin}>
-            <Text style={styles.loginText}>היכנס</Text>
-          </TouchableHighlight>
-          <TouchableHighlight style={[styles.MainButton, styles.loginButton]} onPress={this.btnSignUp}>
-            <Text style={styles.loginText}>הירשם</Text>
-          </TouchableHighlight>
+          <View style={styles.buttonContainer}>
+            <TouchableHighlight style={[styles.MainButton, styles.loginButton]} onPress={this.btnLogin}>
+              <Text style={styles.loginText}>היכנס</Text>
+            </TouchableHighlight>
+          </View>
+          <View style={styles.buttonContainer}>
+            <TouchableHighlight style={[styles.MainButton, styles.loginButton]} onPress={this.btnSignUp}>
+              <Text style={styles.loginText}>הירשם</Text>
+            </TouchableHighlight>
+          </View>
         </View>
       </ImageBackground >
     )
@@ -85,6 +158,7 @@ export default class Login extends Component {
 }
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#DCDCDC',
@@ -154,7 +228,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 30,
     width: 250,
     borderRadius: 30,
   }

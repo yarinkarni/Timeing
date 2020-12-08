@@ -22,7 +22,7 @@ export default class ScholarshipDetails extends Component {
             separator={true}
             inColumn={false}>
             <CardButton
-              onPress={() => this.props.navigation.navigate('StudentRegistration')}
+              onPress={() => this.props.navigation.navigate('Login')}
               title="הגש מועמדות"
               color="#FEB557"
             />

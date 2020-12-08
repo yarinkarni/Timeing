@@ -18,6 +18,7 @@ import ScholarshipList from './Src/Screens/ScholarshipList';
 import ScholarshipDetails from './Src/Screens/ScholarshipDetails';
 import StudentRegistration from './Src/Screens/Student/StudentRegistration';
 import ManagementPage from './Src/Screens/ManagementPage';
+import WatchingHours from './Src/Screens/Student/WatchingHours';
 
 class App extends React.Component {
 
@@ -80,6 +81,11 @@ function MyDrawer() {
         component={ManagementPage}
         options={{ drawerLabel: 'ManagementPage' }}
       />
+      <Drawer.Screen
+        name="WatchingHours"
+        component={WatchingHours}
+        options={{ drawerLabel: 'WatchingHours' }}
+      />
     </Drawer.Navigator>
   );
 }
@@ -98,6 +104,7 @@ const App2 = () => {
           <Stack.Screen name="ScholarshipDetails" component={ScholarshipDetails} />
           <Stack.Screen name="StudentRegistration" component={StudentRegistration} />
           <Stack.Screen name="ManagementPage" component={ManagementPage} />
+          <Stack.Screen name="WatchingHours" component={WatchingHours} />
         </Stack.Navigator>
       </MyDrawer>
     </NavigationContainer>

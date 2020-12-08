@@ -82,7 +82,9 @@ export default class ScholarshipList extends Component {
         <ScrollView>
           {cards}
         </ScrollView>
-        <FontAwesome name="user-plus" size={50} style={styles.fab} />
+        <FontAwesome name="user-plus" size={50} style={styles.fab}
+          onPress={() => this.props.navigation.navigate('Login')}
+        />
         {/* <FAB
           style={styles.fab}
           small

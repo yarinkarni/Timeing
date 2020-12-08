@@ -2,13 +2,7 @@ import React, { Component } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
-//import { FAB } from 'react-native-paper';
-// import Fab from '@material-ui/core/Fab';
-// import EditTwoToneIcon from '@material-ui/icons/EditTwoTone';
-//import DeleteForeverTwoTone from '@material-ui/icons/DeleteForeverTwoTone';
 let url = 'http://site04.up2app.co.il/';
-
 export default class ManagementPage extends Component {
   constructor(props) {
     super(props);
@@ -78,13 +72,9 @@ export default class ManagementPage extends Component {
         <ScrollView>
           {cards}
         </ScrollView>
-        <FontAwesome name="user-plus" size={50} style={styles.fab} />
-        {/* <FAB
-          style={styles.fab}
-          small
-          icon="plus"
-          onPress={() => console.log('Pressed')}
-        /> */}
+        <FontAwesome name="user-plus" size={50} style={styles.fab}
+          onPress={() => this.props.navigation.navigate('Login')}
+        />
       </View>
     );
   }

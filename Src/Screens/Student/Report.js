@@ -1,48 +1,77 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-
+import Geolocation from '@react-native-community/geolocation';
+import { observer, inject } from 'mobx-react'
+@inject("FollowersStore")
+@observer
 export default class Report extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      curTime: '',
+      StudentID: this.props.FollowersStore.getUser.StudentID,
+      //ScholarshipID:this.props.user.user.id,
+      curTime: '',//לא צריך
       startTime: '',
-      endTime: ''
+      endTime: '',
+      startlatitude: 'unknown',
+      startlongitude: 'unknown',
+      endlatitude: 'unknown',
+      endlongitude: 'unknown',
+      list: [],
     };
   }
-  componentDidMount() {
-    setInterval(() => {
-      this.setState({
-        curTime: new Date().toLocaleString()
+  componentDidMount = async () => {
+    let returnedObj = null;
+    await fetch(url + "getRequestsByStudentID/" + this.props.FollowersStore.getUser.StudentID,
+      {
+        method: 'GET',
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }),
       })
-    }, 1000)
+      .then((resp) => resp.json())
+      .then((data) => {
+        if (data != null) {
+          returnedObj = data;
+          this.setState({ list: data });
+        }
+        else {
+          alert("wrong ID!");
+          returnedObj = null;
+        }
+      })
+      .catch(function (err) {
+        alert(err);
+      });
+    if (this.state.list.length == 0) {
+      alert("אין מלגות שאושרו");
+    }
   }
   btnStart = () => {
     let date = new Date();
     let hours = date.getHours();
     let minutes = date.getMinutes();
     let seconds = date.getSeconds();
+    Geolocation.getCurrentPosition((info) => {
+      this.setState({ startlatitude: info.coords.latitude })
+      this.setState({ startlongitude: info.coords.longitude })
+      console.log(this.state.startlatitude + ' this.state.startlatitude')
+      console.log(this.state.startlongitude + ' this.state.startlongitude')
+    })
     this.setState({ startTime: `${hours}:${minutes}:${seconds}` });
-    // Alert.alert('1')
-    // navigator.geolocation.getCurrentPosition(
-    //   (position) => {
-    //     const output =
-    //       'latitude=' + position.coords.latitude +
-    //       '\nlongitude=' + position.coords.longitude +
-    //       '\naltitude=' + position.coords.altitude +
-    //       '\nheading=' + position.coords.heading +
-    //       '\nspeed=' + position.coords.speed
-    //       Alert.alert(output);
-    //   },
-    //   (error) => Alert.alert(error.message),
-    //   { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    // );
   }
   btnEnd = () => {
     let date = new Date();
     let hours = date.getHours();
     let minutes = date.getMinutes();
     let seconds = date.getSeconds();
+    Geolocation.getCurrentPosition((info) => {
+      this.setState({ endlatitude: info.coords.latitude })
+      this.setState({ endlongitude: info.coords.longitude })
+      console.log(this.state.endlatitude + ' this.state.endlatitude')
+      console.log(this.state.endlongitude + ' this.state.endlongitude')
+    })
     this.setState({ endTime: `${hours}:${minutes}:${seconds}` });
   }
   render() {
@@ -52,7 +81,7 @@ export default class Report extends Component {
           {this.state.curTime}
         </Text>
         <Text style={s.stdTxt}>
-          שלום
+          שלום {this.props.FollowersStore.getUser.firstname}
         </Text>
         <View style={{ flexWrap: 'wrap', justifyContent: 'space-around', flexDirection: 'row' }}>
           <TouchableOpacity style={s.stdBtn} onPress={this.btnStart}>
@@ -61,9 +90,10 @@ export default class Report extends Component {
 
           <TouchableOpacity style={s.stdBtn} onPress={this.btnEnd}>
             <Text style={s.stdTxt}>יציאה</Text>
+            {/* propsStyle={shift == 'ערב'}isValid={checkValidEvening} */}
           </TouchableOpacity>
 
-          <TouchableOpacity style={s.stdBtn}>
+          <TouchableOpacity style={s.stdBtn} onPress={() => this.props.navigation.navigate('WatchingHours')}>
             <Text style={s.stdTxt}>צפייה בשעות </Text>
           </TouchableOpacity>
         </View>

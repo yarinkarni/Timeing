@@ -13,6 +13,7 @@ import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;  // <--- Import Package 
+import com.reactnativecommunity.geolocation.GeolocationPackage;
 
 
 public class MainApplication extends Application implements ReactApplication {

@@ -90,7 +90,7 @@ export default class Login extends Component {
     return returnedObj;
   }
   render() {
-    console.log()
+    console.log(this.props.FollowersStore.getScholarshipDetails.ScholarshipID+'   ScholarshipID')
     return (
       <ImageBackground
         // source={require('../images/yarin.png')}
@@ -149,7 +149,6 @@ export default class Login extends Component {
           <View
           // style={styles.buttonContainer}
           >
-
           </View>
         </View>
       </ImageBackground >

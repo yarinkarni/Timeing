@@ -11,15 +11,17 @@ export default class ManagementPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      Scholarship: []
+      Scholarship: [],
+      userID: ''
     }
   }
   componentDidMount = async () => {
-    await this.getAllScholarships();
+    await this.setState({ userID: this.props.FollowersStore.getUser.UserID })
+    this.getAllScholarships();
   }
   getAllScholarships = async () => {
     let returnedObj = null;
-    await fetch(url + 'getScholarshipByUserID/' + this.props.FollowersStore.getUser?.UserID,
+    await fetch(url + 'getScholarshipByUserID/' + this.state.userID,
       // 'http://site04.up2app.co.il/getScholarshipByUserID/1'
       {
         method: 'GET',
@@ -44,9 +46,33 @@ export default class ManagementPage extends Component {
   }
   btnDeleteScholarship = (Scholarship) => {
     console.log('Delete    ' + Scholarship.ScholarshipID)
+    fetch(url + 'DeleteScholarship/' + Scholarship.ScholarshipID,
+      {
+        method: 'DELETE',
+        headers: new Headers({
+          'Accept': 'application/json'
+        }),
+      })
+      .then((resp) => {
+        if (resp.status === 200) {
+          let newStudents = this.state.Scholarship.filter(stu => stu.ID !== Scholarship.ScholarshipID);
+          this.setState({
+            Scholarship: newStudents
+          });
+        }
+        else if (resp.status === 400)
+          console.log("BadRequest");
+        else
+          console.log("NotFound");
+
+      }
+      )
+      .catch(function (err) {
+        alert(err);
+      });
   }
   render() {
-    //console.log(this.props.FollowersStore.getUser.UserID + 'this.props.FollowersStore.getUser.UserID,')
+    //    console.log(this.props.FollowersStore.getUser.UserID + 'this.props.FollowersStore.getUser.UserID,')
     const { Scholarship } = this.state;
     // console.log(Scholarship + 'Scholarship      manager')
     // for (let i = 0; i < Scholarship.length; i++) {

@@ -5,10 +5,11 @@ import { SearchBar } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { YellowBox } from 'react-native';
 import Modal from 'react-native-modal';
-
 YellowBox.ignoreWarnings(['Remote debugger']);
-
 let url = 'http://site04.up2app.co.il/';
+import { observer, inject } from 'mobx-react'
+@inject("FollowersStore")
+@observer
 export default class ScholarshipList extends Component {
   constructor(props) {
     super(props);
@@ -21,10 +22,10 @@ export default class ScholarshipList extends Component {
   }
   toggleModal = (index) => {
     this.setState({ isModalVisible: !this.state.isModalVisible, index });
-    console.log(this.state.index + 'this.state.index')
+    //console.log(this.state.index + 'this.state.index')
   };
   updateSearch = (search) => {
-    console.log(search + 'search')
+    //console.log(search + 'search')
     this.setState({ search });
   };
   componentDidMount = async () => {
@@ -53,6 +54,7 @@ export default class ScholarshipList extends Component {
       });
   }
   render() {
+    //console.log(this.props.FollowersStore.getScholarshipDetails.ScholarshipID)
     const { search } = this.state;
     const { list } = this.state;
     var cards = [];
@@ -78,7 +80,6 @@ export default class ScholarshipList extends Component {
               title="פרטים"
               color="#FEB557"
             />
-
           </CardAction>
         </Card>
       )
@@ -122,8 +123,9 @@ export default class ScholarshipList extends Component {
                       inColumn={false}>
                       <CardButton
                         onPress={() => {
-                          this.props.navigation.navigate('Login');
+                          this.props.navigation.navigate('Login',);
                           this.toggleModal();
+                          this.props.FollowersStore.setScholarshipDetails(list[this.state.index])
                         }}
                         title="הגש מועמדות"
                         color="#FEB557"

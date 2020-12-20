@@ -3,26 +3,21 @@ import React from 'react';
 //import AppNav from './Src/Routes/AppNav'
 import { Provider } from 'mobx-react'
 import FollowersStore from './Src/Stores/FollowersStore'
-
-
-
-
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Login from './Src/Screens/Login';
-import Register from './Src/Screens/Register';
+import Register from './Src/Screens/Manager/Register';
 import Report from './Src/Screens/Student/Report';
 import Notifications from './Src/Screens/Student/Notifications';
 import ScholarshipList from './Src/Screens/ScholarshipList';
-import EditScholarship from './Src/Screens/EditScholarship';
+import EditScholarship from './Src/Screens/Manager/EditScholarship';
 import StudentRegistration from './Src/Screens/Student/StudentRegistration';
-import ManagementPage from './Src/Screens/ManagementPage';
+import ManagementPage from './Src/Screens/Manager/ManagementPage';
 import WatchingHours from './Src/Screens/Student/WatchingHours';
-import AddScholarshipPage from './Src/Screens/AddScholarshipPage'
-
+import AddScholarshipPage from './Src/Screens/Manager/AddScholarshipPage';
+import EditStudent from './Src/Screens/Manager/EditStudent';
 class App extends React.Component {
-
   render() {
     return (
       <Provider FollowersStore={FollowersStore}>
@@ -32,13 +27,10 @@ class App extends React.Component {
     );
   }
 }
-
 export default App;
 //const AppContainer = createAppContainer(AppNav);
-
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
-
 function MyDrawer() {
   return (
     <Drawer.Navigator initialRouteName="ScholarshipList">
@@ -92,6 +84,11 @@ function MyDrawer() {
         component={AddScholarshipPage}
         options={{ drawerLabel: 'AddScholarshipPage' }}
       />
+      <Drawer.Screen
+        name="EditStudent"
+        component={EditStudent}
+        options={{ drawerLabel: 'EditStudent' }}
+      />
     </Drawer.Navigator>
   );
 }
@@ -112,6 +109,7 @@ const App2 = () => {
           <Stack.Screen name="ManagementPage" component={ManagementPage} />
           <Stack.Screen name="WatchingHours" component={WatchingHours} />
           <Stack.Screen name="AddScholarshipPage" component={AddScholarshipPage} />
+          <Stack.Screen name="EditStudent" component={EditStudent} />
         </Stack.Navigator>
       </MyDrawer>
     </NavigationContainer>

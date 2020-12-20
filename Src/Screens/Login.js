@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React, { Component } from 'react'
 import { Alert, Text, View, TouchableHighlight, ImageBackground, StyleSheet, TextInput, Image } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Icon from 'react-native-vector-icons/Feather';
@@ -7,36 +7,18 @@ let url = 'http://site04.up2app.co.il/';
 import { observer, inject } from 'mobx-react'
 @inject("FollowersStore")
 @observer
-// const App = () => {
-//   const [selectedValue, setSelectedValue] = useState("סטודנט");
-//   return (
-//     <View style={styles.container}>
-
-//     </View>
-//   );
-// }
-
 export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
+      email: 'g@g.com',
+      password: '1234',
       picker: 'סטודנט',
     }
   }
-
-
-  txtchgEmail = (email) => {
-    this.setState({ email });
-  }
-  txtchgPass = (password) => {
-    this.setState({ password });
-  }
-  btnSignUp = async () => {
-
-    this.props.navigation.navigate('Register');
-  }
+  txtchgEmail = (email) => this.setState({ email });
+  txtchgPass = (password) => this.setState({ password });
+  btnSignUp = () => this.props.navigation.navigate('Register');
   btnLogin = async () => {
     if (this.state.picker === 'מנהל מלגה') {
       let s = await this.checkStudentDetilsForUser(this.state.email, this.state.password);
@@ -49,8 +31,10 @@ export default class Login extends Component {
     }
     else {
       let s = await this.checkStudentDetilsForStudnet(this.state.email, this.state.password);
-      if (s !== null)
+      if (s !== null) {
         this.props.navigation.navigate('Report', { user: s });
+        this.props.FollowersStore.setUser(s)
+      }
       else
         Alert.alert('האימייל או הסיסמא שגויים');
     }
@@ -105,16 +89,23 @@ export default class Login extends Component {
       });
     return returnedObj;
   }
-
-
   render() {
-    console.log(this.state.picker+"this.state.picker")
+    console.log()
     return (
-      <ImageBackground source={require('../images/yarin.png')} style={styles.container}>
+      <ImageBackground
+        // source={require('../images/yarin.png')}
+        style={styles.container}>
         <View style={styles.inner}>
           <Text style={styles.SecondTopic}>כניסה</Text>
-          <Image style={{ width: 100, height: 100 }} />
-          <View style={{padding:20}}>
+          {/* <Image style={{ width: 100, height: 100 }} /> */}
+          <TouchableHighlight
+            style={[styles.MainButton, styles.loginButton]}
+            onPress={this.btnSignUp}>
+            <Text
+              style={styles.loginText}
+            >הירשם</Text>
+          </TouchableHighlight>
+          <View style={{ padding: 20 }}>
             <DropDownPicker
               items={[
                 { label: 'סטודנט', value: 'סטודנט', icon: () => <Icon name="flag" size={18} color="#900" />, hidden: true },
@@ -122,7 +113,7 @@ export default class Login extends Component {
               ]}
               defaultValue={this.state.picker}
               containerStyle={{ height: 40 }}
-              style={{ backgroundColor: '#fafafa',width:250,height:100,position: 'relative' }}
+              style={{ backgroundColor: '#fafafa', width: 250, height: 100, position: 'relative' }}
               itemStyle={{
                 justifyContent: 'flex-start'
               }}
@@ -135,22 +126,30 @@ export default class Login extends Component {
           <View style={styles.inputContainer}>
             <TextInput style={styles.inputs}
               placeholderTextColor="#000000"
-              value={this.state.emailText} onChangeText={(text) => { this.txtchgEmail(text) }} placeholder='אימייל' />
+              value={this.state.email}
+              onChangeText={(text) => { this.txtchgEmail(text) }}
+              placeholder='אימייל' />
           </View>
           <View style={styles.inputContainer}>
             <TextInput style={styles.inputs}
               placeholderTextColor="#000000"
-              value={this.state.password} onChangeText={(text) => { this.txtchgPass(text) }} placeholder='סיסמא' />
+              value={this.state.password}
+              onChangeText={(text) => { this.txtchgPass(text) }}
+              placeholder='סיסמא'
+              secureTextEntry={true}
+            />
           </View>
-          <View style={styles.buttonContainer}>
+          <View
+          // style={styles.buttonContainer}
+          >
             <TouchableHighlight style={[styles.MainButton, styles.loginButton]} onPress={this.btnLogin}>
               <Text style={styles.loginText}>היכנס</Text>
             </TouchableHighlight>
           </View>
-          <View style={styles.buttonContainer}>
-            <TouchableHighlight style={[styles.MainButton, styles.loginButton]} onPress={this.btnSignUp}>
-              <Text style={styles.loginText}>הירשם</Text>
-            </TouchableHighlight>
+          <View
+          // style={styles.buttonContainer}
+          >
+
           </View>
         </View>
       </ImageBackground >
@@ -162,7 +161,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#DCDCDC',
+    // backgroundColor: '#DCDCDC',
+    backgroundColor: '#1E90FF',
+    opacity: 0.7,
     height: "100%",
     width: "100%"
   },
@@ -182,6 +183,7 @@ const styles = StyleSheet.create({
     marginRight: 16,
     borderBottomColor: '#FFFFFF',
     flex: 1,
+    textAlign: 'right'
   },
   buttonContainer: {
     height: 45,
@@ -224,7 +226,6 @@ const styles = StyleSheet.create({
     color: '#ffffff'
   },
   MainButton: {
-
     height: 30,
     flexDirection: 'row',
     justifyContent: 'center',

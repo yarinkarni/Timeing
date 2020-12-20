@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, ScrollView } from 'react-native'
+import { View, StyleSheet, ScrollView, Button, Text } from 'react-native'
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 import { SearchBar } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { YellowBox } from 'react-native';
+import Modal from 'react-native-modal';
+
 YellowBox.ignoreWarnings(['Remote debugger']);
 
 let url = 'http://site04.up2app.co.il/';
@@ -12,10 +14,17 @@ export default class ScholarshipList extends Component {
     super(props);
     this.state = {
       search: '',
-      list: []
+      list: [],
+      isModalVisible: false,
+      index: 0
     }
   }
+  toggleModal = (index) => {
+    this.setState({ isModalVisible: !this.state.isModalVisible, index });
+    console.log(this.state.index + 'this.state.index')
+  };
   updateSearch = (search) => {
+    console.log(search + 'search')
     this.setState({ search });
   };
   componentDidMount = async () => {
@@ -62,7 +71,10 @@ export default class ScholarshipList extends Component {
             separator={true}
             inColumn={false}>
             <CardButton
-              onPress={() => this.props.navigation.navigate('ScholarshipDetails', { ScholarshipDetails: list[index] })}
+              onPress={
+                // () => this.props.navigation.navigate('ScholarshipDetails', { ScholarshipDetails: list[index] })
+                () => { this.toggleModal(index) }
+              }
               title="פרטים"
               color="#FEB557"
             />
@@ -84,6 +96,46 @@ export default class ScholarshipList extends Component {
         <FontAwesome name="user-plus" size={50} style={styles.fab}
           onPress={() => this.props.navigation.navigate('Login')}
         />
+        <View style={{ flex: 1 }}>
+          {/* <Button title="Show modal" onPress={this.toggleModal} /> */}
+          <Modal isVisible={this.state.isModalVisible}>
+            <View style={{ flex: 1 }}>
+              <Text>Hello!</Text>
+              <ScrollView>
+                <View style={{
+                  height: "100%",
+                  width: "100%"
+                }}>
+                  <Card style={{ fontWeight: 'bold', fontSize: 30 }}>
+                    <CardImage
+                      source={{ uri: 'http://bit.ly/2GfzooV' }}
+                      title={"שם ה​מ​​לגה : \n" + list[this.state.index]?.NameOfTheScholarship}
+                    />
+                    <CardTitle
+                      style={styles.loginText}
+                      subtitle={"תנאים : \n" + list[this.state.index]?.Conditions}
+                    />
+                    <CardContent text={"​מועד הגשה : \n" + list[this.state.index]?.DueDate} />
+                    <CardContent text={"הערות : \n" + list[this.state.index]?.Remarks} />
+                    <CardAction
+                      separator={true}
+                      inColumn={false}>
+                      <CardButton
+                        onPress={() => {
+                          this.props.navigation.navigate('Login');
+                          this.toggleModal();
+                        }}
+                        title="הגש מועמדות"
+                        color="#FEB557"
+                      />
+                    </CardAction>
+                  </Card>
+                </View>
+              </ScrollView>
+              <Button title="Hide modal" onPress={this.toggleModal} />
+            </View>
+          </Modal>
+        </View>
       </View>
     )
   }

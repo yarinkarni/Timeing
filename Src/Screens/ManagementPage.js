@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { View, ScrollView, StyleSheet, Alert } from 'react-native';
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { observer, inject } from 'mobx-react'
+
 let url = 'http://site04.up2app.co.il/';
+@inject("FollowersStore")
+@observer
 export default class ManagementPage extends Component {
   constructor(props) {
     super(props);
@@ -10,12 +14,13 @@ export default class ManagementPage extends Component {
       Scholarship: []
     }
   }
-  componentDidMount() {
-    this.getAllScholarships();
+  componentDidMount = async () => {
+    await this.getAllScholarships();
   }
   getAllScholarships = async () => {
     let returnedObj = null;
-    await fetch(url + "getAllScholarships",
+    await fetch(url + 'getScholarshipByUserID/' + this.props.FollowersStore.getUser?.UserID,
+      // 'http://site04.up2app.co.il/getScholarshipByUserID/1'
       {
         method: 'GET',
         headers: new Headers({
@@ -28,7 +33,6 @@ export default class ManagementPage extends Component {
         if (data != null) {
           returnedObj = data;
           this.setState({ Scholarship: data });
-          console.log(this.state.Scholarship[0].NameOfTheScholarship)
         }
         else {
           returnedObj = null;
@@ -38,8 +42,22 @@ export default class ManagementPage extends Component {
         console.log(err);
       });
   }
+  btnDeleteScholarship = (Scholarship) => {
+    console.log('Delete    ' + Scholarship.ScholarshipID)
+  }
   render() {
+    //console.log(this.props.FollowersStore.getUser.UserID + 'this.props.FollowersStore.getUser.UserID,')
     const { Scholarship } = this.state;
+    // console.log(Scholarship + 'Scholarship      manager')
+    // for (let i = 0; i < Scholarship.length; i++) {
+    //   console.log(Scholarship[i].ScholarshipID+ 'Scholarship['+i+'].ScholarshipID')
+    //   console.log(Scholarship[i].IsActive+ 'Scholarship['+i+'].IsActive')
+    //   console.log(Scholarship[i].UserID+ 'Scholarship['+i+'].UserID')
+    //   console.log(Scholarship[i].Conditions+ 'Scholarship['+i+'].Conditions')
+    //   console.log(Scholarship[i].NameOfTheScholarship+ 'Scholarship['+i+'].NameOfTheScholarship')
+    //   console.log(Scholarship[i].DueDate+ 'Scholarship['+i+'].DueDate')
+    //   console.log(Scholarship[i].Remarks+ 'Scholarship['+i+'].Remarks')
+    // }
     var cards = [];
     for (let index = 0; index < Scholarship.length; index++) {
       cards.push(
@@ -58,8 +76,122 @@ export default class ManagementPage extends Component {
             {/* <DeleteForeverTwoTone /> */}
 
             <CardButton
-              onPress={() => this.props.navigation.navigate('ScholarshipDetails', { ScholarshipDetails: list[index] })}
-              title="פרטים"
+              onPress={() => this.props.navigation.navigate('EditScholarship'
+                , { ScholarshipDetails: Scholarship[index] }
+              )}
+              title="עריכה"
+              color="#FEB557"
+            />
+            <CardButton
+              onPress={() => {
+                Alert.alert(
+                  'האם למחוק את המלגה ?',
+                  '',
+                  //My Alert Msg
+                  [
+                    {
+                      text: '',
+                      //Ask me later
+                      onPress: () => console.log('Ask me later pressed')
+                    },
+                    {
+                      text: 'לא',
+                      onPress: () => console.log('Cancel Pressed'),
+                      style: 'cancel',
+                    },
+                    {
+                      text: 'כן',
+                      onPress: () => this.btnDeleteScholarship(Scholarship[index])
+                    },
+                  ],
+                  { cancelable: false },
+                );
+              }}
+              title="מחיקה"
+              color="#FEB557"
+            />
+            <CardButton
+              onPress={() => {
+                Alert.alert(
+                  'האם למחוק את המלגה ?',
+                  '',
+                  //My Alert Msg
+                  [
+                    {
+                      text: '',
+                      //Ask me later
+                      onPress: () => console.log('Ask me later pressed')
+                    },
+                    {
+                      text: 'לא',
+                      onPress: () => console.log('Cancel Pressed'),
+                      style: 'cancel',
+                    },
+                    {
+                      text: 'כן',
+                      onPress: () => this.btnDeleteScholarship(Scholarship[index])
+                    },
+                  ],
+                  { cancelable: false },
+                );
+              }}
+              title="סטודנטים"
+              color="#FEB557"
+            />
+            <CardButton
+              onPress={() => {
+                Alert.alert(
+                  'האם למחוק את המלגה ?',
+                  '',
+                  //My Alert Msg
+                  [
+                    {
+                      text: '',
+                      //Ask me later
+                      onPress: () => console.log('Ask me later pressed')
+                    },
+                    {
+                      text: 'לא',
+                      onPress: () => console.log('Cancel Pressed'),
+                      style: 'cancel',
+                    },
+                    {
+                      text: 'כן',
+                      onPress: () => this.btnDeleteScholarship(Scholarship[index])
+                    },
+                  ],
+                  { cancelable: false },
+                );
+              }}
+              title="אישור שעות"
+              color="#FEB557"
+            />
+            <CardButton
+              onPress={() => {
+                Alert.alert(
+                  'האם למחוק את המלגה ?',
+                  '',
+                  //My Alert Msg
+                  [
+                    {
+                      text: '',
+                      //Ask me later
+                      onPress: () => console.log('Ask me later pressed')
+                    },
+                    {
+                      text: 'לא',
+                      onPress: () => console.log('Cancel Pressed'),
+                      style: 'cancel',
+                    },
+                    {
+                      text: 'כן',
+                      onPress: () => this.btnDeleteScholarship(Scholarship[index])
+                    },
+                  ],
+                  { cancelable: false },
+                );
+              }}
+              title="הודעות"
               color="#FEB557"
             />
 
@@ -73,7 +205,7 @@ export default class ManagementPage extends Component {
           {cards}
         </ScrollView>
         <FontAwesome name="user-plus" size={50} style={styles.fab}
-          onPress={() => this.props.navigation.navigate('Login')}
+          onPress={() => this.props.navigation.navigate('AddScholarshipPage')}
         />
       </View>
     );
@@ -83,7 +215,9 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#DCDCDC',
+    backgroundColor: '#1E90FF',
+    opacity: 0.7,
+    //backgroundColor: '#DCDCDC',
     height: "100%",
     width: "100%"
   },

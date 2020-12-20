@@ -15,7 +15,7 @@ import Register from './Src/Screens/Register';
 import Report from './Src/Screens/Student/Report';
 import Notifications from './Src/Screens/Student/Notifications';
 import ScholarshipList from './Src/Screens/ScholarshipList';
-import ScholarshipDetails from './Src/Screens/ScholarshipDetails';
+import EditScholarship from './Src/Screens/EditScholarship';
 import StudentRegistration from './Src/Screens/Student/StudentRegistration';
 import ManagementPage from './Src/Screens/ManagementPage';
 import WatchingHours from './Src/Screens/Student/WatchingHours';
@@ -48,9 +48,9 @@ function MyDrawer() {
         options={{ drawerLabel: 'ScholarshipList' }}
       />
       <Drawer.Screen
-        name="ScholarshipDetails"
-        component={ScholarshipDetails}
-        options={{ drawerLabel: 'ScholarshipDetails' }}
+        name="EditScholarship"
+        component={EditScholarship}
+        options={{ drawerLabel: 'EditScholarship' }}
       />
       <Drawer.Screen
         name="StudentRegistration"
@@ -107,7 +107,7 @@ const App2 = () => {
           <Stack.Screen name="Report" component={Report} />
           <Stack.Screen name="Notifications" component={Notifications} />
           <Stack.Screen name="ScholarshipList" component={ScholarshipList} />
-          <Stack.Screen name="ScholarshipDetails" component={ScholarshipDetails} />
+          <Stack.Screen name="EditScholarship" component={EditScholarship} />
           <Stack.Screen name="StudentRegistration" component={StudentRegistration} />
           <Stack.Screen name="ManagementPage" component={ManagementPage} />
           <Stack.Screen name="WatchingHours" component={WatchingHours} />

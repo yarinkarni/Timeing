@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Dimensions } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import InputOutline from 'react-native-input-outline';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { observer, inject } from 'mobx-react'
@@ -25,7 +25,7 @@ export default class AddScholarshipPage extends Component {
   txtchgDueDate = (DueDate) => this.setState({ DueDate });
   txtchgRemarks = (Remarks) => this.setState({ Remarks });
   btnAddScholarship = async () => {
-    console.log("נתונים"+this.state.ScholarshipID+ this.state.IsActive+ this.state.UserID+ this.state.Conditions+ this.state.NameOfTheScholarship+ this.state.DueDate+ this.state.Remarks)
+    console.log("ScholarshipID = " + this.state.ScholarshipID + ' IsActive = ' + this.state.IsActive + ' UserID = ' + this.state.UserID + ' Conditions = ' + this.state.Conditions + ' NameOfTheScholarship = ' + this.state.NameOfTheScholarship + ' DueDate = ' + this.state.DueDate + ' Remarks = ' + this.state.Remarks)
     let s = await this.AddScholarship(this.state.ScholarshipID, this.state.IsActive, this.state.UserID, this.state.Conditions, this.state.NameOfTheScholarship, this.state.DueDate, this.state.Remarks);
     console.log('returned value=' + s[0]);
     if (s == null) {
@@ -104,7 +104,8 @@ export default class AddScholarshipPage extends Component {
           style={styles.inputContainer}
           placeholder="הערות"
           focusedColor='blue'
-          defaultColor='grey'
+          defaultColor='black'
+          // 'grey'
           value={this.state.firstName}
           onChangeText={(text) => { this.txtchgRemarks(text) }}
         />
@@ -120,7 +121,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#DCDCDC',
+    backgroundColor: '#1E90FF',
+    opacity: 0.7,
+    //backgroundColor: '#DCDCDC',
   },
   inputContainer: {
     //borderBottomColor: '#F5FCFF',

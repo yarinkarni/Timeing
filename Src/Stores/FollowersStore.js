@@ -5,39 +5,15 @@ import PushNotification from "react-native-push-notification";
 class FollowersStore {
   //משתנה שנשמר במכשיר
   @persist @observable userData = null
+  @persist('object') @observable reportData = null;
 
   //משתנה לוקאלי של האפליקציה
   @observable user = 'ron';
   @observable ScholarshipDetails = null;
   @observable news = [];
   @observable Token = 'yarin';
-  // constructor() {
-  //   //FirebaseApp.initializeApp();
-  //   PushNotification.configure({
-  //     onRegister: function (token) {
-  //       this.Token = token;
-  //       console.log("TOKEN:", token);
-  //     },
-  //     onNotification: function (notification) {
-  //       console.log("NOTIFICATION:", notification);
-  //       //notification.finish(PushNotificationIOS.FetchResult.NoData);
-  //     },
-  //     // onAction: function (notification) {
-  //     //   console.log("ACTION:", notification.action);
-  //     //   console.log("NOTIFICATION:", notification);
-  //     // },
-  //     // onRegistrationError: function (err) {
-  //     //   console.error(err.message, err);
-  //     // },
-  //     permissions: {
-  //       alert: true,
-  //       badge: true,
-  //       sound: true,
-  //     },
-  //     popInitialNotification: true,
-  //     requestPermissions: true,
-  //   });
-  // }
+  @observable scholorships = [];
+  @observable scholarshipByStudent = []
 
   testPush = () => {
     PushNotification.localNotification({
@@ -56,6 +32,10 @@ class FollowersStore {
   }
   //מחזיר משתנים
   @computed
+  get getScholorships() {
+    return this.scholorships
+  }
+  @computed
   get getUser() {
     return this.user
   }
@@ -66,10 +46,34 @@ class FollowersStore {
   get getToken() {
     return this.Token
   }
+
+  @computed
+  get getScholarshipByStudent() {
+    return this.scholarshipByStudent
+  }
+
+  @computed
+  get getReportData() {
+    return this.reportData
+  }
   //לשנות את המשתנה
+
+  @action
+  setReportData(data) {
+    console.log("data - - - ->",data)
+    this.reportData = data
+  }
   @action
   setUser(user) {
     this.user = user
+  }
+  @action
+  setScholarshipByStudent(data) {
+    this.scholarshipByStudent = data
+  }
+  @action
+  setScholarship(data) {
+    this.scholorships = data
   }
   @action
   setScholarshipDetails(ScholarshipDetails) {

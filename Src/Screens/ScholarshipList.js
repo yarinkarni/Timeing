@@ -5,6 +5,18 @@ import { SearchBar } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { YellowBox } from 'react-native';
 import Modal from 'react-native-modal';
+import AsyncStorage from '@react-native-community/async-storage';
+import { create } from 'mobx-persist';
+import FollowersStore from '../Stores/FollowersStore'
+
+const hydrate = create({
+  storage: AsyncStorage,
+});
+const GetHydrate = () => {
+  hydrate('userData', FollowersStore).then(() =>
+      console.log('Get data from store'),
+  );
+}
 YellowBox.ignoreWarnings(['Remote debugger']);
 let url = 'http://site04.up2app.co.il/';
 import { observer, inject } from 'mobx-react'
@@ -29,6 +41,8 @@ export default class ScholarshipList extends Component {
     this.setState({ search });
   };
   componentDidMount = async () => {
+    await GetHydrate()
+
     let returnedObj = null;
     await fetch(url + "getAllScholarships",
       {
@@ -43,6 +57,7 @@ export default class ScholarshipList extends Component {
         if (data != null) {
           returnedObj = data;
           this.setState({ list: data });
+          this.props.FollowersStore.setScholarship(data)
         }
         else {
           alert("wrong ID!");

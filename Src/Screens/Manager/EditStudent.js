@@ -130,23 +130,23 @@ export default class EditStudent extends Component {
     let students2Show = <Text style={{ fontSize: 40 }}>loading...</Text>;
     if (this.state.students.length !== 0) {
       students2Show = this.state.students.map((student) => {
-        console.log(student + '   lol');
+        console.log(student[0].FirstName + '   lol');
         return (
           <View
             // style={styles.container}
             style={{ flexDirection: 'row', justifyContent: 'space-between' }}
           >
-            <Text key={student.StudentID}>
-              <Text>{student.StudentID}k</Text>
-              <Text>{student.FirstName}s</Text>
-              <Text>{student.LastName}a</Text>
-              <Text>{student.Email}c</Text>
-              <Text>{student.Password}z</Text>
-              <Text>{student.Telephone}a</Text>
-              <Text>{student.BirthDate}a</Text>
-              <Text>{student.Sex}a</Text>
-              <Text>{student.Address}a</Text>
-              <Text>{student.City}a</Text>
+            <Text key={student[0].StudentID}>
+              <Text>{student[0].StudentID}</Text>
+              <Text>{student[0].FirstName}</Text>
+              <Text>{student[0].LastName}</Text>
+              <Text>{student[0].Email}</Text>
+              {/* <Text>{student[0].Password}</Text>
+              <Text>{student[0].Telephone}</Text>
+              <Text>{student[0].BirthDate}</Text>
+              <Text>{student[0].Sex}</Text>
+              <Text>{student[0].Address}</Text>
+              <Text>{student[0].City}</Text> */}
             </Text>
             <View style={{ flexDirection: 'row' }}>
               <MaterialIcons name='edit' size={20} style={styles.fab}

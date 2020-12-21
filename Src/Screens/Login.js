@@ -11,8 +11,8 @@ export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: 'g@g.com',
-      password: '1234',
+      email: 'karni@a.com',
+      password: '123',
       picker: 'סטודנט',
     }
   }
@@ -32,8 +32,9 @@ export default class Login extends Component {
     else {
       let s = await this.checkStudentDetilsForStudnet(this.state.email, this.state.password);
       if (s !== null) {
-        this.props.navigation.navigate('Report', { user: s });
         this.props.FollowersStore.setUser(s)
+
+        this.props.navigation.navigate('Report', { user: s });
       }
       else
         Alert.alert('האימייל או הסיסמא שגויים');
@@ -90,7 +91,6 @@ export default class Login extends Component {
     return returnedObj;
   }
   render() {
-    console.log(this.props.FollowersStore.getScholarshipDetails.ScholarshipID+'   ScholarshipID')
     return (
       <ImageBackground
         // source={require('../images/yarin.png')}
